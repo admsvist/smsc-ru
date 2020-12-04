@@ -18,16 +18,16 @@ class SmscRuChannel
     /**
      * Send the given notification.
      *
-     * @param  mixed  $notifiable
-     * @param  Notification  $notification
-     *
-     * @throws CouldNotSendNotification
+     * @param mixed $notifiable
+     * @param Notification $notification
      *
      * @return array|null
+     * @throws CouldNotSendNotification
+     *
      */
     public function send($notifiable, Notification $notification): ?array
     {
-        if (! ($to = $this->getRecipients($notifiable, $notification))) {
+        if (!($to = $this->getRecipients($notifiable, $notification))) {
             return null;
         }
 
@@ -43,8 +43,8 @@ class SmscRuChannel
     /**
      * Gets a list of phones from the given notifiable.
      *
-     * @param  mixed  $notifiable
-     * @param  Notification  $notification
+     * @param mixed $notifiable
+     * @param Notification $notification
      *
      * @return string[]
      */
@@ -66,13 +66,17 @@ class SmscRuChannel
         }
 
         $params = [
-            'phones'  => \implode(',', $recipients),
-            'mes'     => $message->content,
-            'sender'  => $message->from,
+            'phones' => \implode(',', $recipients),
+            'mes' => $message->content,
+            'sender' => $message->from,
         ];
 
         if ($message->sendAt instanceof \DateTimeInterface) {
-            $params['time'] = '0'.$message->sendAt->getTimestamp();
+            $params['time'] = '0' . $message->sendAt->getTimestamp();
+        }
+
+        if (!!$message->call) {
+            $params['call'] = 1;
         }
 
         return $this->smsc->send($params);

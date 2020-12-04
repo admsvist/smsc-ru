@@ -25,10 +25,12 @@ class SmscRuMessage
      */
     public $sendAt;
 
+    public $call;
+
     /**
      * Create a new message instance.
      *
-     * @param  string $content
+     * @param string $content
      *
      * @return static
      */
@@ -38,7 +40,7 @@ class SmscRuMessage
     }
 
     /**
-     * @param  string  $content
+     * @param string $content
      */
     public function __construct($content = '')
     {
@@ -48,7 +50,7 @@ class SmscRuMessage
     /**
      * Set the message content.
      *
-     * @param  string  $content
+     * @param string $content
      *
      * @return $this
      */
@@ -62,7 +64,7 @@ class SmscRuMessage
     /**
      * Set the phone number or sender name the message should be sent from.
      *
-     * @param  string  $from
+     * @param string $from
      *
      * @return $this
      */
@@ -76,13 +78,27 @@ class SmscRuMessage
     /**
      * Set the time the message should be sent.
      *
-     * @param  \DateTimeInterface|null  $sendAt
+     * @param \DateTimeInterface|null $sendAt
      *
      * @return $this
      */
     public function sendAt(\DateTimeInterface $sendAt = null)
     {
         $this->sendAt = $sendAt;
+
+        return $this;
+    }
+
+    /**
+     * Set the phone number or sender name the message should be sent from.
+     *
+     * @param string $from
+     *
+     * @return $this
+     */
+    public function call()
+    {
+        $this->call = true;
 
         return $this;
     }
